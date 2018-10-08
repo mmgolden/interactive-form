@@ -7,9 +7,10 @@
   <title>Register for Full Stack Conf</title>
   
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
 
   <!-- CSS -->
+  <link rel="stylesheet" href="css/normalize.min.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -18,14 +19,14 @@
     
     <!-- Header -->
     <header>
-      <span>Register for</span>
-      <h1>Full Stack Conf</h1>
+      <h1>Register for Full Stack Conf</h1>
     </header>
     <!-- End header-->
 
     <!-- Form -->
     <form action="index.html" method="post">
               
+      <!-- Basic info -->
       <fieldset>         
         <legend>Basic Info</legend>
         
@@ -45,7 +46,9 @@
           <option value="other">Other</option>  
         </select>           
       </fieldset>
-      
+      <!-- End basic info -->
+
+      <!-- T-shirt info -->
       <fieldset class="shirt">
         <legend>T-Shirt Info</legend>
         
@@ -80,7 +83,9 @@
           </select>
         </div>                
       </fieldset>
+      <!-- End t-shirt info -->
 
+      <!-- Register for activities -->
       <fieldset class="activities">
         <legend>Register for Activities</legend>
         <label><input type="checkbox" name="all"> Main Conference — $200</label>
@@ -92,6 +97,9 @@
         <label><input type="checkbox" name="npm"> npm Workshop — Wednesday 1pm-4pm, $100</label>
                   	
       </fieldset>
+      <!-- End register for activities -->
+
+      <!-- Payment info -->
       <fieldset>
         <legend>Payment Info</legend>
 
@@ -105,19 +113,21 @@
 
         <div id="credit-card" class="credit-card">
 
-          <div class="col-6 col">
-            <label for="cc-num">Card Number:</label>
-        	  <input id="cc-num" name="user_cc-num" type="text">
-          </div>
-
-          <div class="col-3 col">
-            <label for="zip">Zip Code:</label>
-            <input id="zip" name="user_zip" type="text"> 
-          </div>
-
-          <div class="col-3 col">
-            <label for="cvv">CVV:</label>
-            <input id="cvv" name="user_cvv" type="text"> 
+          <div class="credit-card-info">
+            <div class="card-number">
+              <label for="cc-num">Card Number:</label>
+              <input id="cc-num" name="user_cc-num" type="text">
+            </div>
+  
+            <div class="zip-code">
+              <label for="zip">Zip Code:</label>
+              <input id="zip" name="user_zip" type="text"> 
+            </div>
+  
+            <div class="cvv">
+              <label for="cvv">CVV:</label>
+              <input id="cvv" name="user_cvv" type="text"> 
+            </div>
           </div>
 
           <label for="exp-month">Expiration Date:</label>
@@ -153,7 +163,8 @@
         	<p>If you selected the Bitcoin option we'll take you to the Coinbase site to set up your billing information. Due to the nature of exchanging Bitcoin, all Bitcoin transactions will be final.</p>
         </div>                  
 
-      </fieldset>        
+      </fieldset>  
+      <!-- End payment info -->      
         
       <button type="submit">Register</button>
       

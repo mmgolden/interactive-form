@@ -1,6 +1,4 @@
-/* ================================= 
-  Base Element Styles
-==================================== */
+/********************** General **********************/
 
 * {
   box-sizing: border-box;
@@ -9,36 +7,40 @@
 body,
 input,
 button {
- font-family: 'Roboto', sans-serif;
+ font-family: 'Questrial', sans-serif;
 }
 
 body {
-  font: 1em/1.5;
-  color: #184f68;
-	background: #accbd9;
+  font: 16px;
+  color: #555;
+  background: #fff;
 }
 
 header {
 	text-align: center;  
+	padding: 2rem 0 0 0;
+	background: #fbfbfb;
+	border: 1px solid #e4e4e4;
+	border-bottom: none;
 }
 
 h1 {
-	font-size: 2.5em;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+	font-size: 1.5rem;
 	margin: 0;
+	color: #555;
 }
 
 a {
   text-decoration: none;
 }
 
-/* ================================= 
-  Form Element Styles
-==================================== */
+/********************** Form **********************/
 
 form {
 	padding: .875em 1.875em 1.875em;
-	background: #85b5ca;
+	background: #fbfbfb;
+	border: 1px solid #e4e4e4;
+	border-top: none;
 }
 
 fieldset,
@@ -59,9 +61,14 @@ button {
 
 legend {
 	font-weight: 500;
-	padding-top: .5em;
-	border-top: 2px solid #679cb3;
+	padding-top: 1.5rem;
+	border-top: 1px solid #e4e4e4;
 	margin-bottom: 1.125em;
+}
+
+fieldset:first-child legend {
+	border-top: none;
+	padding-top: 0;
 }
 
 input[type="text"],
@@ -71,7 +78,7 @@ legend {
 }
 
 label {
-	color: #000;
+	color: #6b6b6b;
 	display: block;
 	margin-bottom: .5em;
 }
@@ -85,14 +92,14 @@ input {
 	font-size: 1em;
 	font-weight: 500;
 	padding: .8em;
-	background: #c1deeb;
-	border: 2px solid #c1deeb;
+	background: #fff;
+	border: 1px solid #e4e4e4;
 	outline: none;
 }
 
 input:focus {
 	background: #fff;
-	border-color: #5e97b0;
+	border: 2px solid #349ef5;
 	transition: border-color .4s, background-color .4s;
 }
 
@@ -104,18 +111,18 @@ input[type="radio"] {
 button {
 	color: #fff;
 	padding: .55em 1.25em;
-	background: #22627e;
+	background: #349ef5;
 	margin: 1.25em 0 .5em;
 	cursor: pointer;
+	width: 100%;
+	transition: background 0.5s;
 }
 
 button:hover {
-	background: #184c62;
+	background: #2a80c7;
 }
 
-/* ================================= 
-  Page Styles
-==================================== */
+/********************** Page **********************/
 
 .container {
 	margin: auto;
@@ -135,9 +142,7 @@ button:hover {
 	margin-top: 1.25em;
 }
 
-/* ================================= 
-  Helper Classes
-==================================== */
+/********************** Helper classes **********************/
 
 .is-hidden {
 	display: none;
@@ -149,33 +154,23 @@ button:hover {
   clear: both;
 }
 
-/* ================================= 
-  Media Queries
-==================================== */
+/********************** Media queries **********************/
 
-@media (min-width: 0) and (max-width: 679px) {
+@media (min-width: 768px) {
 	header {
-		padding: 2em 0;
+		margin-top: 2rem;
+	}
+	h1 {
+		font-size: 1.75rem;
 	}
 	button {
-		width: 100%;
+		width: auto;
 	}
-}
-
-@media (min-width: 680px) {
-	header {
-		padding: 4.65em 0 2.5em;
+	.credit-card-info {
+		display: flex;
+		justify-content: space-between;
 	}
-	.col {
-		float: left;
-	}
-	.col + .col {
-		margin-left: 2.5%;
-	}
-	.col-3 {
-		width: 23%;
-	}
-	.col-6 {
-		width: 49%;
+	form {
+		margin-bottom: 2rem;
 	}
 }
