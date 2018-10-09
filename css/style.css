@@ -1,19 +1,20 @@
 /********************** General **********************/
 
 * {
-  box-sizing: border-box;
-}
-
+	-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+  }
+  
 body,
 input,
 button {
- font-family: 'Questrial', sans-serif;
+font-family: 'Questrial', sans-serif;
 }
 
 body {
-  font: 16px;
-  color: #555;
-  background: #fff;
+font: 16px;
+color: #555;
+background: #fff;
 }
 
 header {
@@ -31,7 +32,7 @@ h1 {
 }
 
 a {
-  text-decoration: none;
+text-decoration: none;
 }
 
 /********************** Form **********************/
@@ -78,7 +79,7 @@ legend {
 }
 
 label {
-	color: #6b6b6b;
+	color: #555;
 	display: block;
 	margin-bottom: .5em;
 }
@@ -99,7 +100,9 @@ input {
 
 input:focus {
 	background: #fff;
-	border: 2px solid #349ef5;
+	border: 1px solid #349ef5;
+	-webkit-transition: border-color .4s, background-color .4s;
+	-o-transition: border-color .4s, background-color .4s;
 	transition: border-color .4s, background-color .4s;
 }
 
@@ -115,6 +118,8 @@ button {
 	margin: 1.25em 0 .5em;
 	cursor: pointer;
 	width: 100%;
+	-webkit-transition: background 0.5s;
+	-o-transition: background 0.5s;
 	transition: background 0.5s;
 }
 
@@ -149,9 +154,9 @@ button:hover {
 }
 
 .clearfix::after {
-  content: " ";
-  display: table;
-  clear: both;
+content: " ";
+display: table;
+clear: both;
 }
 
 /********************** Media queries **********************/
@@ -163,14 +168,36 @@ button:hover {
 	h1 {
 		font-size: 1.75rem;
 	}
-	button {
-		width: auto;
-	}
-	.credit-card-info {
-		display: flex;
-		justify-content: space-between;
-	}
 	form {
 		margin-bottom: 2rem;
+	}
+	.personal-info,
+	.credit-card-info {
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-box-pack: justify;
+			-ms-flex-pack: justify;
+				justify-content: space-between;
+	}
+	.name, .email {
+		width: 100%;
+	}
+	.name {
+		margin-right: 10px;
+	}
+	#other-title {
+		display: block;
+		width: 49%;
+	}
+	.card-number {
+		width: 65%;
+		margin-right: 10px;
+	}
+	.zip-code {
+		margin-right: 10px;
+	}
+	button {
+		width: auto;
 	}
 }

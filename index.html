@@ -18,23 +18,29 @@
 	<div class="container">
     
     <!-- Header -->
-    <header>
+    <header role="banner">
       <h1>Register for Full Stack Conf</h1>
     </header>
     <!-- End header-->
 
     <!-- Form -->
-    <form action="index.html" method="post">
+    <form action="index.html" method="post" role="form">
               
       <!-- Basic info -->
       <fieldset>         
         <legend>Basic Info</legend>
         
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="user_name">
-        
-        <label for="mail">Email:</label>
-        <input type="email" id="mail" name="user_email">
+        <div class="personal-info">
+          <div class="name">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="user_name">
+          </div>
+          
+          <div class="email">
+            <label for="mail">Email:</label>
+            <input type="email" id="mail" name="user_email">
+          </div>
+        </div>
         
         <label for="title">Job Role</label>
         <select id="title" name="user_title">
@@ -44,7 +50,9 @@
           <option value="designer">Designer</option>          
           <option value="student">Student</option>
           <option value="other">Other</option>  
-        </select>           
+        </select>   
+        
+        <input type="text" id="other-title" placeholder="Your Job Role">
       </fieldset>
       <!-- End basic info -->
 
@@ -173,5 +181,9 @@
 
   </div>
   <!-- End container -->
+
+  <!-- JavaScript -->
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
