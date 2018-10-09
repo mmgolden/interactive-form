@@ -159,6 +159,10 @@ display: table;
 clear: both;
 }
 
+.disabled {
+	color: #bbbbbb;
+}
+
 /********************** Media queries **********************/
 
 @media (min-width: 768px) {
