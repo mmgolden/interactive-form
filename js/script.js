@@ -48,22 +48,14 @@ $('#design').on('change', function() {
     }
 });
 
-// JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100
-// Express Workshop — Tuesday 9am-12pm, $100
-
-// JavaScript Libraries Workshop — Tuesday 1pm-4pm, $100
-// Node.js Workshop — Tuesday 1pm-4pm, $100
-
 // Get the checkboxes
 const checkboxes = $('input[type=checkbox]');
 // Create div element to hold total
 const $totalDiv = $('<div class="total"></div>');
-// Total
-let total = 0;
 
 // Appends the total amount to 'Register for Activities'
 function appendTotal(total) {
-    if($('.total span')) {
+    if($('.total span') && total > 0) {
         $('.total span').remove();
         $('.activities').append($totalDiv);
         $totalDiv.append(`<span>Total: $${total}</span>`);
@@ -84,27 +76,73 @@ function removeDisabled() {
     });
 }
 
+// Returns the total cost
+function getTotal() {
+
+    // Start with zero total
+    let total = 0;
+
+    // Iterate over each checkbox that is checked
+    $('input[type=checkbox]:checked').each(function() {
+
+        // Get the label
+        const activity = $(this).parent().text();
+
+        // Get the dollar amount from the label
+        const cost = parseInt(activity.substr(activity.length - 3, activity.length));
+
+        // Total
+        total = total + cost;
+    });
+
+    // If the total is 0, then remove the total from the page
+    if (total === 0) {
+        $('.total span').remove();
+    // Otherwise return the total
+    } else {
+        return total;
+    }
+}
+
 // When a checkbox is checked
 checkboxes.on('change', function() {
 
-    // JavaScript Frameworks Workshop
-    if ($('input[name=all]').is(':checked') && $('input[name=js-frameworks]').is(':checked')) {
+    // If the checkbox is checked get the total
+    if ($('input[type=checkbox]:checked')) {
+        total = getTotal();
+    } 
 
-        total = 300;
-        appendTotal(total);
+    // Display the total
+    appendTotal(total);
+
+    // JavaScript Frameworks Workshop
+    if ($('input[name=js-frameworks]').is(':checked')) {
+
         disableCheckbox('express');
+
+    // Express Workshop 
+    } else if ($('input[name=express]').is(':checked')) {
+   
+        disableCheckbox('js-frameworks');
+
+    // JavaScript Libraries Workshop
+    } else if ($('input[name=js-libs]').is(':checked')) {
+        
+        disableCheckbox('node');
+
+    // Node.js Workshop 
+    } else if ($('input[name=node]').is(':checked')) {
+        
+        disableCheckbox('js-libs');
 
     // Main Conference
     } else if ($('input[name=all]').is(':checked')) {
 
-        total = 200;
-        appendTotal(total);
         removeDisabled();
 
     // Otherwise remove the total and any disabled labels and checkboxes
     } else {
-
-        $('.total span').remove();
+        
         removeDisabled();
 
     }
