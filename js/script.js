@@ -104,46 +104,43 @@ function getTotal() {
     }
 }
 
+// Conflicts
+const conflicts = {
+    'js-frameworks': 'express',
+    'express': 'js-frameworks',
+    'js-libs': 'node',
+    'node': 'js-libs'
+};
+
+// Show the conflicts
+function showConflicts() {
+    
+    // Iterate over each checkbox that is checked
+    $('input[type=checkbox]:checked').each(function() {
+
+        // Get the name
+        let name = $(this).get(0).name;
+
+        // If there is a property in the conflicts object that matches the name
+        if (conflicts.hasOwnProperty(name)) {
+
+            // Then disable the checkbox and label that conflicts with that name
+            disableCheckbox(conflicts[name]);
+        }
+    });
+}
+
 // When a checkbox is checked
 checkboxes.on('change', function() {
 
-    // If the checkbox is checked get the total
-    if ($('input[type=checkbox]:checked')) {
-        total = getTotal();
-    } 
-
     // Display the total
+    total = getTotal();
     appendTotal(total);
 
-    // JavaScript Frameworks Workshop
-    if ($('input[name=js-frameworks]').is(':checked')) {
+    // Remove disabled from checkboxes and labels
+    removeDisabled();
 
-        disableCheckbox('express');
+    // Show the conflicts
+    showConflicts();
 
-    // Express Workshop 
-    } else if ($('input[name=express]').is(':checked')) {
-   
-        disableCheckbox('js-frameworks');
-
-    // JavaScript Libraries Workshop
-    } else if ($('input[name=js-libs]').is(':checked')) {
-        
-        disableCheckbox('node');
-
-    // Node.js Workshop 
-    } else if ($('input[name=node]').is(':checked')) {
-        
-        disableCheckbox('js-libs');
-
-    // Main Conference
-    } else if ($('input[name=all]').is(':checked')) {
-
-        removeDisabled();
-
-    // Otherwise remove the total and any disabled labels and checkboxes
-    } else {
-        
-        removeDisabled();
-
-    }
 });
