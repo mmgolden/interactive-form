@@ -134,8 +134,7 @@ function showConflicts() {
 checkboxes.on('change', function() {
 
     // Display the total
-    total = getTotal();
-    appendTotal(total);
+    appendTotal(getTotal());
 
     // Remove disabled from checkboxes and labels
     removeDisabled();
@@ -143,4 +142,50 @@ checkboxes.on('change', function() {
     // Show the conflicts
     showConflicts();
 
+});
+
+// Get DOM elements
+const creditCard = $('#credit-card');
+const paypal = $('#credit-card').next();
+const bitcoin = $('#credit-card').next().next();
+
+// Hides all of the payment options
+function hidePayments() {
+    creditCard.hide();
+    paypal.hide();
+    bitcoin.hide();
+}
+
+// The "Credit Card" payment option is selected by default 
+$('option[value="credit card"]').get(0).selected = true;
+
+// Disable the "Select Payment Method" option
+$('option[value="select_method"]').get(0).disabled = true;
+
+// Hide the "PayPal" and "Bitcoin" information and show the "Credit Card" information
+hidePayments();
+creditCard.show();
+
+// Payment option in the select menu matches the payment option displayed on the page
+$('#payment').on('change', function() {
+
+    // When a user selects the "PayPal" payment option, the PayPal information is displayed
+    if ($(this).val() === 'paypal') {
+
+        hidePayments();
+        paypal.fadeIn();
+
+    // When a user selects the "Bitcoin" payment option, the Bitcoin information is displayed
+    } else if ($(this).val() === 'bitcoin') {
+
+        hidePayments();
+        bitcoin.fadeIn();
+
+    // When a user selects the "Credit Card" payment option, the credit card information is displayed
+    } else if ($(this).val() === 'credit card') {
+
+        hidePayments();
+        creditCard.fadeIn();
+
+    }
 });
