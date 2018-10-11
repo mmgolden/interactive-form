@@ -189,3 +189,60 @@ $('#payment').on('change', function() {
 
     }
 });
+
+// Checks if the name field is blank
+function isNameValid() {
+    return $('#name').val().length > 0;
+}
+
+// Checks if the email address is validly formatted
+// Regular expression copied from http://www.jquerybyexample.net/2011/04/validate-email-address-using-jquery.html
+function isEmailValid() {
+    const email = $('#mail').val();
+    const filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    return filter.test(email) ? true : false;
+}
+
+// User must select at least one checkbox under the "Register for Activities" section of the form.
+function isActivityChecked() {
+    return $('input[type=checkbox]:checked').length > 0;
+}
+
+// Checks if credit card information is valid
+function isCreditCardValid() {
+
+    // If "PayPal" is selected, then return true
+    if ($('#payment').val() === 'paypal') {
+        return true;
+
+    // If "Bitcoin" is selected, then return true
+    } else if ($('#payment').val() === 'bitcoin') {
+        return true;
+
+    // If "Credit Card" is selected, test for validation
+    } else if ($('#payment').val() === 'credit card') {
+
+        // If the selected payment option is "Credit Card," make sure the user has supplied a Credit Card number, a Zip Code, and a 3 number CVV value before the form can be submitted.
+        // Credit Card field should only accept a number between 13 and 16 digits.
+        // The Zip Code field should accept a 5-digit number.
+        // The CVV should only accept a number that is exactly 3 digits long.
+        return false;
+    }
+}
+
+// Check if all fields pass validation
+function checkValidation() {
+    return isNameValid() && isEmailValid() && isActivityChecked() && isCreditCardValid();
+}
+
+// If checkValidation() is false, disable the submit button. If it's true, enable the submit button
+function enableSubmit() {
+    $('button[type=submit]').get(0).disabled = !checkValidation();
+}
+
+$('#name').keyup(isNameValid).keyup(enableSubmit);
+$('#mail').keyup(isEmailValid).keyup(enableSubmit);
+$('input[type=checkbox]').change(isActivityChecked).change(enableSubmit);
+$('#payment').change(isCreditCardValid).change(enableSubmit);
+
+enableSubmit();
