@@ -222,11 +222,24 @@ function isCreditCardValid() {
     // If "Credit Card" is selected, test for validation
     } else if ($('#payment').val() === 'credit card') {
 
-        // If the selected payment option is "Credit Card," make sure the user has supplied a Credit Card number, a Zip Code, and a 3 number CVV value before the form can be submitted.
-        // Credit Card field should only accept a number between 13 and 16 digits.
-        // The Zip Code field should accept a 5-digit number.
-        // The CVV should only accept a number that is exactly 3 digits long.
-        return false;
+        const ccNum = $('#cc-num').val();
+        const zip = $('#zip').val();
+        const cvv = $('#cvv').val();
+        // Regular expression copied from https://stackoverflow.com/questions/1779013/check-if-string-contains-only-digits
+        const filter = /^\d+$/;
+
+        // If the value contains numbers 0-9
+        if (filter.test(ccNum) && filter.test(zip) && filter.test(cvv)) {
+
+            // Credit Card field should only accept a number between 13 and 16 digits
+            // The Zip Code field should accept a 5-digit number
+            // The CVV should only accept a number that is exactly 3 digits long
+            return ccNum.length >= 13 && ccNum.length <= 16 && zip.length === 5 && cvv.length === 3;
+
+        } else {
+            return false;
+        }
+
     }
 }
 
@@ -240,9 +253,31 @@ function enableSubmit() {
     $('button[type=submit]').get(0).disabled = !checkValidation();
 }
 
-$('#name').keyup(isNameValid).keyup(enableSubmit);
-$('#mail').keyup(isEmailValid).keyup(enableSubmit);
-$('input[type=checkbox]').change(isActivityChecked).change(enableSubmit);
-$('#payment').change(isCreditCardValid).change(enableSubmit);
+// Change the color of the submit button if checkValidation() is false
+function changeBtnColor() {
+    if ($('button[type=submit]').get(0).disabled = true && !checkValidation()) {
+        $('button[type=submit]').addClass('disabled-btn');
+    } else if ($('button[type=submit]').get(0).disabled = true && checkValidation()) {
+        $('button[type=submit]').removeClass('disabled-btn');
+    }
+}
+
+$('#name').keyup(isNameValid).keyup(changeBtnColor).keyup(enableSubmit);
+$('#mail').keyup(isEmailValid).keyup(changeBtnColor).keyup(enableSubmit);
+$('input[type=checkbox]').change(isActivityChecked).change(changeBtnColor).change(enableSubmit);
+$('#payment').change(isCreditCardValid).change(changeBtnColor).change(enableSubmit);
+$('#credit-card input').keyup(isCreditCardValid).keyup(changeBtnColor).keyup(enableSubmit);
+
+changeBtnColor();
+
+// Provide some kind of indication when there’s a validation error. The field’s borders could turn red, for example, or even better for the user would be if a red text message appeared near the field.
+// The following fields should have some obvious form of an error indication:
+// Name field
+// Email field
+// Register for Activities checkboxes (at least one must be selected)
+// Credit Card number (Only if Credit Card payment method is selected)
+// Zip Code (Only if Credit Card payment method is selected)
+// CVV (Only if Credit Card payment method is selected)
+// Note: Error messages or indications should not be visible by default. They should only show upon submission, or after some user interaction.
 
 enableSubmit();

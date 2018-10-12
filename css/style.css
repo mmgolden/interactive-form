@@ -163,6 +163,15 @@ clear: both;
 	color: #bbbbbb;
 }
 
+.disabled-btn {
+	background: #797979;
+	color: #d3d3d3;
+}
+
+.disabled-btn:hover {
+	background: #797979;
+}
+
 /********************** Media queries **********************/
 
 @media (min-width: 768px) {
