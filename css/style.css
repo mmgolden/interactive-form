@@ -172,6 +172,16 @@ clear: both;
 	background: #797979;
 }
 
+.text-input-error {
+	border: 1px solid red;
+}
+
+.error-msg {
+	color: red;
+	margin-top: -15px;
+	margin-bottom: 15px;
+}
+
 /********************** Media queries **********************/
 
 @media (min-width: 768px) {

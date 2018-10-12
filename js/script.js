@@ -192,7 +192,7 @@ $('#payment').on('change', function() {
 
 // Checks if the name field is blank
 function isNameValid() {
-    return $('#name').val().length > 0;
+    return $('#name').val().length > 0; 
 }
 
 // Checks if the email address is validly formatted
@@ -262,22 +262,82 @@ function changeBtnColor() {
     }
 }
 
-$('#name').keyup(isNameValid).keyup(changeBtnColor).keyup(enableSubmit);
-$('#mail').keyup(isEmailValid).keyup(changeBtnColor).keyup(enableSubmit);
+// Show an error
+function showError(element, msg) {
+    // If an error message exists, first remove it
+    removeError(element);
+
+    // Change the border color
+    element.addClass('text-input-error');
+
+    // Add the error message
+    const $msgDiv = $('<div class="error-msg"></div>');
+    $msgDiv.text(msg);
+    element.after($msgDiv);
+}
+
+// Remove the error
+function removeError(element) {
+    element.removeClass('text-input-error');
+    if (element.next().prop('class', 'error-msg')) {
+        element.next().remove()
+    }
+}
+
+// If the name input is not valid, show error. Otherwise, remove error and enable submission
+$('#name').on('keyup focus', function() {
+    if (!isNameValid()) {
+        showError($(this), 'Please enter a name.');
+    } else {
+        removeError($(this));
+        enableSubmit();
+    }
+});
+
+// If the email input is not valid, show error. Otherwise, remove error and enable submission
+$('#mail').on('keyup focus', function() {
+    if (!isEmailValid()) {
+        showError($(this), 'Please enter a valid email.');
+    } else {
+        removeError($(this));
+        enableSubmit();
+    }
+});
+
+
 $('input[type=checkbox]').change(isActivityChecked).change(changeBtnColor).change(enableSubmit);
 $('#payment').change(isCreditCardValid).change(changeBtnColor).change(enableSubmit);
-$('#credit-card input').keyup(isCreditCardValid).keyup(changeBtnColor).keyup(enableSubmit);
+
+$('#credit-card input').on('keyup focus', function() {
+
+    if (!isCreditCardValid()) {
+
+        if ($(this).get(0).id === 'cc-num') {
+
+            showError($(this), 'Please enter a credit card number.');
+
+        } else if ($(this).get(0).id === 'zip') {
+
+            showError($(this), 'Please enter a zip code.');
+
+        } else if ($(this).get(0).id === 'cvv') {
+
+            showError($(this), 'Please enter a CVV.');
+
+        }
+
+    } else {
+        removeError($(this));
+        enableSubmit();
+    }
+
+});
 
 changeBtnColor();
 
-// Provide some kind of indication when there’s a validation error. The field’s borders could turn red, for example, or even better for the user would be if a red text message appeared near the field.
+
 // The following fields should have some obvious form of an error indication:
-// Name field
-// Email field
 // Register for Activities checkboxes (at least one must be selected)
-// Credit Card number (Only if Credit Card payment method is selected)
-// Zip Code (Only if Credit Card payment method is selected)
-// CVV (Only if Credit Card payment method is selected)
-// Note: Error messages or indications should not be visible by default. They should only show upon submission, or after some user interaction.
+
 
 enableSubmit();
