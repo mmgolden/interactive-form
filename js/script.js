@@ -54,7 +54,7 @@ $('#design').on('change', function() {
 
 // Get the checkboxes
 const checkboxes = $('input[type=checkbox]');
-// Create div element to hold total
+// Create div element to display total
 const $totalDiv = $('<div class="total"></div>');
 
 // Appends the total amount to 'Register for Activities'
@@ -66,7 +66,7 @@ function appendTotal(total) {
     }
 }
 
-// Disables the checkbox
+// Disables the checkbox and label
 function disableCheckbox(name) {
     $(`input[name=${name}]`).get(0).disabled = true;
     $(`input[name=${name}]`).parent().addClass('disabled');
@@ -96,7 +96,7 @@ function getTotal() {
         const cost = parseInt(activity.substr(activity.length - 3, activity.length));
 
         // Total
-        total = total + cost;
+        total += cost;
     });
 
     // If the total is 0, then remove the total from the page
@@ -166,7 +166,7 @@ $('option[value="credit card"]').get(0).selected = true;
 // Disable the "Select Payment Method" option
 $('option[value="select_method"]').get(0).disabled = true;
 
-// Hide the "PayPal" and "Bitcoin" information and show the "Credit Card" information
+// Hide the "PayPal" and "Bitcoin" information and show the "Credit Card" information by default
 hidePayments();
 creditCard.show();
 
@@ -190,7 +190,6 @@ $('#payment').on('change', function() {
 
         hidePayments();
         creditCard.fadeIn();
-
     }
 });
 
@@ -253,7 +252,7 @@ function checkPayment() {
     }
 }
 
-// Show an error
+// Show an error for input fields
 function showError(element, msg) {
     // If an error message exists, first remove it
     removeError(element);
@@ -267,7 +266,7 @@ function showError(element, msg) {
     element.after($msgDiv);
 }
 
-// Remove the error
+// Remove the error for input fields
 function removeError(element) {
     element.removeClass('text-input-error');
     if (element.next().prop('class', 'error-msg')) {
@@ -311,29 +310,98 @@ $('#mail').on('keyup focus', function() {
     !isEmailValid() ? showError($(this), 'Please enter a valid email.') : removeError($(this));
 });
 
-// If the credit card number is not valid, show error. Otherwise, remove error
+// If the credit card number is not valid, show error
 $('#cc-num').on('keyup focus', function() {
-    if (!isCreditCardValid() && $('#cc-num').val().length === 0) {
+
+    const ccValue = $('#cc-num').val();
+
+    // If letters are entered, show an error
+    if (!isCreditCardValid() && !filter.test(ccValue) && ccValue.length > 0) {
+
+        showError($(this), 'Please only enter numbers.');
+
+    // If the credit card input is empty, show an error    
+    } else if (!isCreditCardValid() && ccValue.length === 0) {
 
         showError($(this), 'Please enter a credit card number.');
 
-    } else if (!isCreditCardValid() && $('#cc-num').val().length > 0 && $('#cc-num').val().length < 13) {
+    // If the credit card number length is greater than 0 but less than 13, show an error
+    } else if (!isCreditCardValid() && ccValue.length > 0 && ccValue.length < 13) {
 
         showError($(this), 'Please enter a number that is between 13 and 16 digits long.');
-        
+
+    // If the credit card number length is greater than 16, show an error
+    } else if (!isCreditCardValid() && ccValue.length > 16) {
+
+        showError($(this), 'Please enter a number that is between 13 and 16 digits long.');
+
+    // Otherwise, remove the error
     } else {
         removeError($(this));
     }
 });
 
-// If the zip code is not valid, show error. Otherwise, remove error
+// If the zip code is not valid, show error
 $('#zip').on('keyup focus', function() {
-    !isZipCodeValid() ? showError($(this), 'Please enter a zip code.') : removeError($(this));
+    
+    const zipValue = $('#zip').val();
+
+    // If letters are entered, show an error
+    if (!isZipCodeValid() && !filter.test(zipValue) && zipValue.length > 0) {
+
+        showError($(this), 'Please only enter numbers.');
+
+    // If the zip code input is empty, show an error
+    } else if (!isZipCodeValid() && zipValue.length === 0) {
+
+        showError($(this), 'Please enter a zip code.');
+
+    // If the zip code length is less than 5, show an error
+    } else if (!isZipCodeValid() && zipValue.length > 0 && zipValue.length < 5) {
+
+        showError($(this), 'Must be 5 numbers.')
+
+    // If the zip code length is more than 5, show an error
+    } else if (!isZipCodeValid() && zipValue.length > 5) {
+
+        showError($(this), 'Must be 5 numbers.')
+
+    // Otherwise, remove the error
+    } else {
+        removeError($(this));
+    }
+
 });
 
-// If the CVV code is not valid, show error. Otherwise remove error
+// If the CVV code is not valid, show error. 
 $('#cvv').on('keyup focus', function() {
-    !isCvvValid() ? showError($(this), 'Please enter a CVV.') : removeError($(this));
+    
+    const cvvValue = $('#cvv').val();
+
+    // If letters are entered, show an error
+    if (!isCvvValid() && !filter.test(cvvValue) && cvvValue.length > 0) {
+
+        showError($(this), 'Please only enter numbers.');
+
+    // If the CVV input is empty, show an error
+    } else if (!isCvvValid() && cvvValue.length === 0) {
+
+        showError($(this), 'Please enter a CVV.');
+
+    // If the CVV length is greater than 0 but less than 3, show an error
+    } else if (!isCvvValid() && cvvValue.length > 0 && cvvValue.length < 3) {
+
+        showError($(this), 'Must be 3 numbers.');
+
+    // If the CVV length is greater than 3, show an error
+    } else if (!isCvvValid() && cvvValue.length > 3) {
+
+        showError($(this), 'Must be 3 numbers.');
+
+    // Otherwise, remove the error
+    } else {
+        removeError($(this));
+    }
 });
 
 // Show the error under 'Register for Activities'
