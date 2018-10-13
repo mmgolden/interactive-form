@@ -26,11 +26,18 @@ function appendColorOptions(firstColor, secondColor, thirdColor) {
     }));
 }
 
+// First, no color options appear in the “Color” drop down and the “Color” field reads “Please select a T-shirt theme”
+colorOptions.remove();
+$('#color').append('<option>Please select a T-shirt theme</option>');
+
 // For the t-shirt 'Color' menu, only display the color options that match the design selected in the 'Design' menu
 $('#design').on('change', function() {
 
     // First, remove all of the options
-    colorOptions.remove();
+    $('#color option').remove();
+
+    // Disable "Select Theme"
+    $('#design option').get(0).disabled = true;
 
     // If the user selects "Theme - JS Puns" then the color menu should only display "Cornflower Blue," "Dark Slate Grey," and "Gold."
     if ($(this).val() === 'js puns') {
@@ -42,10 +49,7 @@ $('#design').on('change', function() {
 
         appendColorOptions('tomato', 'steelblue', 'dimgrey');
 
-    // Otherwise, hide the t-shirt 'Color' menu
-    } else {
-        $('#colors-js-puns').fadeOut();
-    }
+    } 
 });
 
 // Get the checkboxes
@@ -208,8 +212,32 @@ function isActivityChecked() {
     return $('input[type=checkbox]:checked').length > 0;
 }
 
-// Checks if credit card information is valid
+// Numbers 0-9 - regular expression copied from https://stackoverflow.com/questions/1779013/check-if-string-contains-only-digits
+const filter = /^\d+$/;
+
+// Checks if the credit card number is valid
 function isCreditCardValid() {
+    const ccNum = $('#cc-num').val();
+    // Credit Card field should only accept a number between 13 and 16 digits
+    return filter.test(ccNum) ? ccNum.length >= 13 && ccNum.length <= 16 : false;
+}
+
+// Checks if the zip code is valid
+function isZipCodeValid() {
+    const zip = $('#zip').val();
+    // The Zip Code field should accept a 5-digit number
+    return filter.test(zip) ? zip.length === 5 : false;
+}
+
+// Checks if the CVV code is valid
+function isCvvValid() {
+    const cvv = $('#cvv').val();
+    // The CVV should only accept a number that is exactly 3 digits long
+    return filter.test(cvv) ? cvv.length === 3 : false;
+}
+
+// Check for payment selection
+function checkPayment() {
 
     // If "PayPal" is selected, then return true
     if ($('#payment').val() === 'paypal') {
@@ -221,44 +249,7 @@ function isCreditCardValid() {
 
     // If "Credit Card" is selected, test for validation
     } else if ($('#payment').val() === 'credit card') {
-
-        const ccNum = $('#cc-num').val();
-        const zip = $('#zip').val();
-        const cvv = $('#cvv').val();
-        // Regular expression copied from https://stackoverflow.com/questions/1779013/check-if-string-contains-only-digits
-        const filter = /^\d+$/;
-
-        // If the value contains numbers 0-9
-        if (filter.test(ccNum) && filter.test(zip) && filter.test(cvv)) {
-
-            // Credit Card field should only accept a number between 13 and 16 digits
-            // The Zip Code field should accept a 5-digit number
-            // The CVV should only accept a number that is exactly 3 digits long
-            return ccNum.length >= 13 && ccNum.length <= 16 && zip.length === 5 && cvv.length === 3;
-
-        } else {
-            return false;
-        }
-
-    }
-}
-
-// Check if all fields pass validation
-function checkValidation() {
-    return isNameValid() && isEmailValid() && isActivityChecked() && isCreditCardValid();
-}
-
-// If checkValidation() is false, disable the submit button. If it's true, enable the submit button
-function enableSubmit() {
-    $('button[type=submit]').get(0).disabled = !checkValidation();
-}
-
-// Change the color of the submit button if checkValidation() is false
-function changeBtnColor() {
-    if ($('button[type=submit]').get(0).disabled = true && !checkValidation()) {
-        $('button[type=submit]').addClass('disabled-btn');
-    } else if ($('button[type=submit]').get(0).disabled = true && checkValidation()) {
-        $('button[type=submit]').removeClass('disabled-btn');
+        return isCreditCardValid() && isZipCodeValid() && isCvvValid();
     }
 }
 
@@ -284,60 +275,86 @@ function removeError(element) {
     }
 }
 
-// If the name input is not valid, show error. Otherwise, remove error and enable submission
+// Show error for checkboxes
+function showCheckboxError(msg) {
+    const $msgDiv = $('<div class="error-msg"></div>');
+    $msgDiv.text(msg);
+    $('.activities legend').after($msgDiv);
+}
+
+// Check if all fields pass validation
+function checkValidation() {
+    return isNameValid() && isEmailValid() && isActivityChecked() && checkPayment();
+}
+
+// If checkValidation() is false, disable the submit button. If it's true, enable the submit button
+function enableSubmit() {
+    $('button[type=submit]').get(0).disabled = !checkValidation();
+}
+
+// Change the color of the submit button if checkValidation() is false
+function changeBtnColor() {
+    if ($('button[type=submit]').get(0).disabled = true && !checkValidation()) {
+        $('button[type=submit]').addClass('disabled-btn');
+    } else if ($('button[type=submit]').get(0).disabled = true && checkValidation()) {
+        $('button[type=submit]').removeClass('disabled-btn');
+    }
+}
+
+// If the name input is not valid, show error. Otherwise, remove error
 $('#name').on('keyup focus', function() {
-    if (!isNameValid()) {
-        showError($(this), 'Please enter a name.');
-    } else {
-        removeError($(this));
-        enableSubmit();
-    }
+    !isNameValid() ? showError($(this), 'Please enter a name.') : removeError($(this));
 });
 
-// If the email input is not valid, show error. Otherwise, remove error and enable submission
+// If the email input is not valid, show error. Otherwise, remove error
 $('#mail').on('keyup focus', function() {
-    if (!isEmailValid()) {
-        showError($(this), 'Please enter a valid email.');
+    !isEmailValid() ? showError($(this), 'Please enter a valid email.') : removeError($(this));
+});
+
+// If the credit card number is not valid, show error. Otherwise, remove error
+$('#cc-num').on('keyup focus', function() {
+    if (!isCreditCardValid() && $('#cc-num').val().length === 0) {
+
+        showError($(this), 'Please enter a credit card number.');
+
+    } else if (!isCreditCardValid() && $('#cc-num').val().length > 0 && $('#cc-num').val().length < 13) {
+
+        showError($(this), 'Please enter a number that is between 13 and 16 digits long.');
+        
     } else {
         removeError($(this));
-        enableSubmit();
     }
 });
 
+// If the zip code is not valid, show error. Otherwise, remove error
+$('#zip').on('keyup focus', function() {
+    !isZipCodeValid() ? showError($(this), 'Please enter a zip code.') : removeError($(this));
+});
 
+// If the CVV code is not valid, show error. Otherwise remove error
+$('#cvv').on('keyup focus', function() {
+    !isCvvValid() ? showError($(this), 'Please enter a CVV.') : removeError($(this));
+});
+
+// Show the error under 'Register for Activities'
+showCheckboxError('Please select at least one activity.');
+
+// If a checkbox is checked, hide the error. Otherwise, show the error
+$('input[type=checkbox]').on('change', function() {
+    if ($('input[type=checkbox]:checked').length > 0) {
+        $('.activities legend').next().hide();
+    } else {
+        showCheckboxError('Please select at least one activity.');
+    }
+});
+
+// Enable submission
 $('input[type=checkbox]').change(isActivityChecked).change(changeBtnColor).change(enableSubmit);
-$('#payment').change(isCreditCardValid).change(changeBtnColor).change(enableSubmit);
-
-$('#credit-card input').on('keyup focus', function() {
-
-    if (!isCreditCardValid()) {
-
-        if ($(this).get(0).id === 'cc-num') {
-
-            showError($(this), 'Please enter a credit card number.');
-
-        } else if ($(this).get(0).id === 'zip') {
-
-            showError($(this), 'Please enter a zip code.');
-
-        } else if ($(this).get(0).id === 'cvv') {
-
-            showError($(this), 'Please enter a CVV.');
-
-        }
-
-    } else {
-        removeError($(this));
-        enableSubmit();
-    }
-
-});
+$('#payment').change(checkPayment).change(changeBtnColor).change(enableSubmit);
+$('#cc-num').keyup(checkPayment).keyup(changeBtnColor).keyup(enableSubmit);
+$('#zip').keyup(checkPayment).keyup(changeBtnColor).keyup(enableSubmit);
+$('#cvv').keyup(checkPayment).keyup(changeBtnColor).keyup(enableSubmit);
 
 changeBtnColor();
-
-
-// The following fields should have some obvious form of an error indication:
-// Register for Activities checkboxes (at least one must be selected)
-
 
 enableSubmit();
