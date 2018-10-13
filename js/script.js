@@ -291,6 +291,12 @@ function enableSubmit() {
     $('button[type=submit]').get(0).disabled = !checkValidation();
 }
 
+// Disable the submit button
+function disableSubmit() {
+    $('button[type=submit]').addClass('disabled-btn');
+    $('button[type=submit]').get(0).disabled = true;
+}
+
 // Change the color of the submit button if checkValidation() is false
 function changeBtnColor() {
     if ($('button[type=submit]').get(0).disabled = true && !checkValidation()) {
@@ -417,11 +423,69 @@ $('input[type=checkbox]').on('change', function() {
 });
 
 // Enable submission
-$('input[type=checkbox]').change(isActivityChecked).change(changeBtnColor).change(enableSubmit);
-$('#payment').change(checkPayment).change(changeBtnColor).change(enableSubmit);
-$('#cc-num').keyup(checkPayment).keyup(changeBtnColor).keyup(enableSubmit);
-$('#zip').keyup(checkPayment).keyup(changeBtnColor).keyup(enableSubmit);
-$('#cvv').keyup(checkPayment).keyup(changeBtnColor).keyup(enableSubmit);
+$('#name').on('keyup', function() {
+    if (checkValidation()) {
+        changeBtnColor();
+        enableSubmit();
+    } else {
+        disableSubmit();
+    }
+    
+});
+
+$('#mail').on('keyup', function() {
+    if (checkValidation()) {
+        changeBtnColor();
+        enableSubmit();
+    } else {
+        disableSubmit();
+    }
+});
+
+$('input[type=checkbox]').on('change', function() {
+    if (checkValidation()) {
+        changeBtnColor();
+        enableSubmit();
+    } else {
+        disableSubmit();
+    }
+});
+
+$('#payment').on('change', function() {
+    if (checkValidation()) {
+        changeBtnColor();
+        enableSubmit();
+    } else {
+        disableSubmit();
+    }
+});
+
+$('#cc-num').on('keyup', function() {
+    if (checkValidation()) {
+        changeBtnColor();
+        enableSubmit();
+    } else {
+        disableSubmit();
+    }
+});
+
+$('#zip').on('keyup', function() {
+    if (checkValidation()) {
+        changeBtnColor();
+        enableSubmit();
+    } else {
+        disableSubmit();
+    }
+});
+
+$('#cvv').on('keyup', function() {
+    if (checkValidation()) {
+        changeBtnColor();
+        enableSubmit();
+    } else {
+        disableSubmit();
+    }
+});
 
 changeBtnColor();
 
