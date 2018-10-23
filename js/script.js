@@ -422,70 +422,38 @@ $('input[type=checkbox]').on('change', function() {
     }
 });
 
-// Enable submission
-$('#name').on('keyup', function() {
-    if (checkValidation()) {
-        changeBtnColor();
-        enableSubmit();
-    } else {
-        disableSubmit();
-    }
-    
-});
+// Enable submission when an event happens
+function enableSubmitWithEvent(element, eventType) {
+    $(element).on(eventType, function() {
+        if (checkValidation()) {
+            changeBtnColor();
+            enableSubmit();
+        } else {
+            disableSubmit();
+        }
+    });
+}
 
-$('#mail').on('keyup', function() {
-    if (checkValidation()) {
-        changeBtnColor();
-        enableSubmit();
-    } else {
-        disableSubmit();
-    }
-});
+// "Name" field
+enableSubmitWithEvent('#name', 'keyup');
 
-$('input[type=checkbox]').on('change', function() {
-    if (checkValidation()) {
-        changeBtnColor();
-        enableSubmit();
-    } else {
-        disableSubmit();
-    }
-});
+// "Email" field
+enableSubmitWithEvent('#mail', 'keyup');
 
-$('#payment').on('change', function() {
-    if (checkValidation()) {
-        changeBtnColor();
-        enableSubmit();
-    } else {
-        disableSubmit();
-    }
-});
+// "Register for Activities" checkboxes
+enableSubmitWithEvent('input[type=checkbox]', 'change');
 
-$('#cc-num').on('keyup', function() {
-    if (checkValidation()) {
-        changeBtnColor();
-        enableSubmit();
-    } else {
-        disableSubmit();
-    }
-});
+// "Payment Info" menu
+enableSubmitWithEvent('#payment', 'change');
 
-$('#zip').on('keyup', function() {
-    if (checkValidation()) {
-        changeBtnColor();
-        enableSubmit();
-    } else {
-        disableSubmit();
-    }
-});
+// "Card Number" field
+enableSubmitWithEvent('#cc-num', 'keyup');
 
-$('#cvv').on('keyup', function() {
-    if (checkValidation()) {
-        changeBtnColor();
-        enableSubmit();
-    } else {
-        disableSubmit();
-    }
-});
+// "Zip Code" field
+enableSubmitWithEvent('#zip', 'keyup');
+
+// "CVV" field
+enableSubmitWithEvent('#cvv', 'keyup');
 
 changeBtnColor();
 
